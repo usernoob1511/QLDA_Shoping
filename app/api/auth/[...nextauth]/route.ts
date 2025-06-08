@@ -18,22 +18,29 @@ export const authOptions: any = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-
         try {
           const user = await prisma.user.findFirst({
             where: {
               email: credentials.email,
             },
           });
+          
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               user.password!
             );
+            
             if (isPasswordCorrect) {
-              return user;
+              // Trả về đối tượng User theo định dạng của NextAuth
+              return {
+                id: user.id,
+                email: user.email,
+                role: user.role
+              };
             }
           }
+          return null; // Trả về null nếu không tìm thấy user hoặc mật khẩu không đúng
         } catch (err: any) {
           throw new Error(err);
         }

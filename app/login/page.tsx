@@ -14,26 +14,19 @@ const LoginPage = () => {
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    // if user has already logged in redirect to home page
     if (sessionStatus === "authenticated") {
-      router.replace("/");
+      // Kiểm tra role và chuyển hướng
+      fetch(`http://localhost:3001/api/users/email/${session?.user?.email}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.role === "admin") {
+            router.replace("/admin");
+          } else {
+            router.replace("/");
+          }
+        });
     }
-  }, [sessionStatus, router]);
-
-  // useEffect(() => {
-  //   if (sessionStatus === "authenticated") {
-  //     // Kiểm tra role và chuyển hướng
-  //     fetch(`http://localhost:3001/api/users/email/${session?.user?.email}`)
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         if (data.role === "admin") {
-  //           router.replace("/admin");
-  //         } else {
-  //           router.replace("/");
-  //         }
-  //       });
-  //   }
-  // }, [sessionStatus, router, session?.user?.email]);
+  }, [sessionStatus, router, session?.user?.email]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -57,37 +50,22 @@ const LoginPage = () => {
       email,
       password,
     });
-
+  
     if (res?.error) {
       setError("Invalid email or password");
       toast.error("Invalid email or password");
-      if (res?.url) router.replace("/");
     } else {
       setError("");
       toast.success("Successful login");
+      // Kiểm tra role và chuyển hướng
+      const userRes = await fetch(`http://localhost:3001/api/users/email/${email}`);
+      const userData = await userRes.json();
+      if (userData.role === "admin") {
+        router.replace("/admin");
+      } else {
+        router.replace("/");
+      }
     }
-
-    // const res = await signIn("credentials", {
-    //   redirect: false,
-    //   email,
-    //   password,
-    // });
-  
-    // if (res?.error) {
-    //   setError("Invalid email or password");
-    //   toast.error("Invalid email or password");
-    // } else {
-    //   setError("");
-    //   toast.success("Successful login");
-    //   // Kiểm tra role và chuyển hướng
-    //   const userRes = await fetch(`http://localhost:3001/api/users/email/${email}`);
-    //   const userData = await userRes.json();
-    //   if (userData.role === "admin") {
-    //     router.replace("/admin");
-    //   } else {
-    //     router.replace("/");
-    //   }
-    // }
   };
 
   if (sessionStatus === "loading") {

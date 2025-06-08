@@ -17,13 +17,13 @@ Dự án e-commerce được xây dựng bằng Next.js, Node.js và MySQL.
 2. **Tạo file môi trường**
    - Tạo file `.env` trong thư mục gốc với nội dung:
    ```
-   DATABASE_URL="mysql://username:password@localhost:3306/singitronic_nextjs"
+   DATABASE_URL="mysql://username:password@localhost:3306/Commerce-Shop"
    NEXTAUTH_SECRET=12D16C923BA17672F89B18C1DB22A
    NEXTAUTH_URL=http://localhost:3000
    ```
    - Tạo file `.env` trong thư mục `server` với nội dung:
    ```
-   DATABASE_URL="mysql://username:password@localhost:3306/singitronic_nextjs"
+   DATABASE_URL="mysql://username:password@localhost:3306/Commerce-Shop"
    ```
    (Thay `username` và `password` bằng thông tin MySQL của bạn)
 
