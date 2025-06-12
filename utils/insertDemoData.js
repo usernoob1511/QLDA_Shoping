@@ -9,7 +9,7 @@ const demoProducts = [
     price: 22,
     rating: 5,
     description: "This is smart phone description",
-    mainImage: "product1.webp",
+    mainImage: "iphoneX.jpg",
     slug: "smart-phone-demo",
     manufacturer: "Samsung",
     category: "smart-phones",
